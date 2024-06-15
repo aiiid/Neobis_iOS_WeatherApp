@@ -70,6 +70,18 @@ class WeatherCardView: UIView {
         
     }
     
+    
+    func set(weather: WeatherModel) {
+        weatherWindState.stateDetail.text = "\(weather.wind) km/h"
+        weatherHumidState.stateDetail.text = "\(weather.humidity)%"
+        temperatureLabel.text = "\(weather.temperature) °C"
+        descriptionLabel.text = "\(weather.weatherName)"
+        
+        
+        
+    }
+    
+    
     private func setupUI() {
         addSubview(cardView)
         cardView.addSubview(stackView)

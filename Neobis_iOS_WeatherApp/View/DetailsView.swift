@@ -1,14 +1,15 @@
 //
-//  MainView.swift
+//  DetailsView.swift
 //  Neobis_iOS_WeatherApp
 //
-//  Created by Ai Hawok on 13/06/2024.
+//  Created by Ai Hawok on 15/06/2024.
 //
+
 
 import UIKit
 import SnapKit
 
-class MainView: UIView {
+class DetailsView: UIView {
     var weatherWindState: WeatherStateView
     var weatherHumidState: WeatherStateView
     var weatherCardView = WeatherCardView()
@@ -20,13 +21,6 @@ class MainView: UIView {
         return label
     }()
     
-//    let weatherCardView: UIView = {
-//        let view = UIView()
-//        view.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-//        view.layer.cornerRadius = 10
-//        return view
-//    }()
-//    
     let temperatureLabel: UILabel = {
         let label = UILabel()
         label.text = "-- °C"
@@ -49,24 +43,15 @@ class MainView: UIView {
         return label
     }()
     
-    let nextScreenButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Next", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        return button
-    }()
-    
-    let searchButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Search", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        return button
-    }()
+    let weatherForecastButton = ButtonWithIcon(
+        backgroundColor: .white,
+        title: "Weather forecast",
+        icon: "chevron.up"
+    )
     
     private let gradientLayer = CAGradientLayer()
     
     override init(frame: CGRect) {
-        
         self.weatherWindState = WeatherStateView(for: .wind, with: "22 km/h")
         self.weatherHumidState = WeatherStateView(for: .humid, with: "60 %")
 
@@ -76,7 +61,6 @@ class MainView: UIView {
     }
     
     required init?(coder: NSCoder) {
-        
         self.weatherWindState = WeatherStateView(for: .wind, with: "22 km/h")
         self.weatherHumidState = WeatherStateView(for: .humid, with: "60 %")
         
@@ -86,27 +70,20 @@ class MainView: UIView {
     }
     
     private func setupUI() {
-        
         addSubview(cityNameLabel)
         addSubview(weatherCardView)
-        addSubview(nextScreenButton)
-        addSubview(searchButton)
+        addSubview(weatherForecastButton)
         
         weatherCardView.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
         
-        nextScreenButton.snp.makeConstraints { make in
+        weatherForecastButton.snp.makeConstraints { make in
             make.bottom.equalTo(safeAreaLayoutGuide).offset(-16)
             make.centerX.equalToSuperview()
+            make.height.equalTo(64)
+            make.width.equalTo(220)
         }
-        
-        searchButton.snp.makeConstraints { make in
-            make.bottom.equalTo(nextScreenButton.snp.top).offset(-16)
-            make.centerX.equalToSuperview()
-        }
-        
-        
     }
     
     private func setupBackground() {
@@ -115,7 +92,6 @@ class MainView: UIView {
         gradientLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
         gradientLayer.frame = bounds
         layer.insertSublayer(gradientLayer, at: 0)
-        
         
         let line1 = UIImageView(image: UIImage(named: "line1.png"))
         let line2 = UIImageView(image: UIImage(named: "line2.png"))
