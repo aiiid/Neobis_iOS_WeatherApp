@@ -8,11 +8,8 @@
 import UIKit
 
 class MainViewController: UIViewController {
-    
     private let mainView = MainView()
     private var viewModel: MainViewModel!
-    
-   
     
     override func loadView() {
         view = mainView
@@ -50,7 +47,7 @@ class MainViewController: UIViewController {
     
     private func setupNavigation() {
         viewModel.onNavigateToDetail = { [weak self] in
-            let detailViewController = DetailViewController()
+            let detailViewController = WeatherForecastViewController()
             self?.navigationController?.pushViewController(detailViewController, animated: true)
         }
         
@@ -71,14 +68,11 @@ class MainViewController: UIViewController {
 }
 
 extension MainViewController: WeatherManagerDelegate {
-    func didUpdateWeather(_ weatherManage: WeatherManager, weather: WeatherModel) {
-//        let temperature = String(format: "%.1f", weather.temperature)
+    func didUpdateWeather(_ weatherManage: WeatherManager, weather: WeatherIconModel) {
         let weatherDetails = self.mainView.weatherCardView
         DispatchQueue.main.async {
-            //add setter method
             weatherDetails.set(weather: weather)
         }
-    
     }
     
     func didFailWithError(error: Error) {

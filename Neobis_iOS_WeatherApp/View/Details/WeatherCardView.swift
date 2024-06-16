@@ -9,8 +9,8 @@ import UIKit
 import SnapKit
 
 class WeatherCardView: UIView {
-    var weatherWindState: WeatherStateView
-    var weatherHumidState: WeatherStateView
+    var weatherWindState: WeatherStateView = WeatherStateView(for: .wind, with: "22 km/h")
+    var weatherHumidState: WeatherStateView = WeatherStateView(for: .humid, with: "60 %")
     
     let cardView: UIView = {
         let view = UIView()
@@ -55,30 +55,19 @@ class WeatherCardView: UIView {
     }()
     
     override init(frame: CGRect) {
-        
-        self.weatherWindState = WeatherStateView(for: .wind, with: "22 km/h")
-        self.weatherHumidState = WeatherStateView(for: .humid, with: "60 %")
         super.init(frame: frame)
         setupUI()
     }
     
     required init?(coder: NSCoder) {
-        self.weatherWindState = WeatherStateView(for: .wind, with: "22 km/h")
-        self.weatherHumidState = WeatherStateView(for: .humid, with: "60 %")
-        
         super.init(coder: coder)
-        
     }
     
-    
-    func set(weather: WeatherModel) {
+    func set(weather: WeatherIconModel) {
         weatherWindState.stateDetail.text = "\(weather.wind) km/h"
         weatherHumidState.stateDetail.text = "\(weather.humidity)%"
         temperatureLabel.text = "\(weather.temperature) °C"
         descriptionLabel.text = "\(weather.weatherName)"
-        
-        
-        
     }
     
     

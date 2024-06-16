@@ -9,7 +9,7 @@
 import CoreLocation
 
 protocol WeatherManagerDelegate{
-    func didUpdateWeather(_ weatherManage: WeatherManager,weather: WeatherModel)
+    func didUpdateWeather(_ weatherManage: WeatherManager,weather: WeatherIconModel)
     func didFailWithError(error: Error)
 }
 
@@ -52,7 +52,7 @@ struct WeatherManager{
         }
     }
     
-    func parseJson(weatherData: Data) -> WeatherModel?{
+    func parseJson(weatherData: Data) -> WeatherIconModel?{
         let decoder = JSONDecoder()
         do{
             let decodedData = try decoder.decode(WeatherData.self, from: weatherData)
@@ -63,7 +63,7 @@ struct WeatherManager{
             let humid = decodedData.main.humidity
             let weatherName = decodedData.weather[0].main
             
-            let weather = WeatherModel(
+            let weather = WeatherIconModel(
                 conditionId: id,
                 weatherName: weatherName,
                 cityName: name,

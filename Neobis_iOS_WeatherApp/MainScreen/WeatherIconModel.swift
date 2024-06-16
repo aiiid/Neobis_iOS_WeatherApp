@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WeatherModel{
+struct WeatherIconModel {
     let conditionId: Int
     let weatherName: String
     let cityName: String
@@ -23,20 +23,22 @@ struct WeatherModel{
     var conditionName: String {
         switch conditionId {
         case 200...232:
-            return "cloud.bolt"
+            return "cloudy.png"
         case 300...321:
             return "cloud.drizzle"
         case 500...531:
-            return "cloud.rain"
+            return "rain.png"
         case 600...622:
             return "cloud.snow"
         case 701...781:
-            return "cloud.fog"
+            return "moonCloud.png"
         case 800:
-            return "sun.max"
+            return "sunshine.png"
         case 801...804:
             return "cloud.bolt"
         default: return "cloud"
         }
     }
+    
+//    ["cloudy.png", "moonCloud.png", "rain.png", "sunCloud.png", "sunshine.png"]
 }
