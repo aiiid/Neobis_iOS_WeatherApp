@@ -8,7 +8,7 @@ import UIKit
 
 class WeatherForecastViewController: UIViewController {
     private let contentView = WeatherView()
-    //    private var viewModel: MainViewModel!
+    private var viewModel: MainViewModel!
     
     
     
@@ -20,7 +20,11 @@ class WeatherForecastViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setupDataSource()
         setupNavigationBar()
-        //        setupViewModel()
+        setupViewModel()
+    }
+    
+    private func setupViewModel() {
+        viewModel = MainViewModel()
     }
     
     private func setupDataSource() {
@@ -48,9 +52,9 @@ extension WeatherForecastViewController: UICollectionViewDataSource, UICollectio
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return DayForecastCell.mockData.count
+            return viewModel.dayWeatherData.count
         case 1:
-            return WeekWeatherModel.MockData.count
+            return viewModel.weekWeatherData.count
         default:
             return 0
         }
@@ -66,7 +70,10 @@ extension WeatherForecastViewController: UICollectionViewDataSource, UICollectio
             ) as? DayForecastCell else {
                 return UICollectionViewCell()
             }
-            cell.cellData = DayForecastCell.mockData[indexPath.row]
+            let data = viewModel.dayWeatherData[indexPath.row]
+            let time = data.dtTxt.toFormattedTime() ?? "00.00"
+        
+            cell.set(degree: String(data.main.temp), icon: data.weather[0].assetName, time: time)
             return cell
         case 1:
             guard let cell = collectionView.dequeueReusableCell(
@@ -75,7 +82,10 @@ extension WeatherForecastViewController: UICollectionViewDataSource, UICollectio
             ) as? WeekForecastCell else {
                 return UICollectionViewCell()
             }
-            cell.cellData = WeekWeatherModel.MockData[indexPath.row]
+            let data = viewModel.dayWeatherData[indexPath.row]
+            let day = data.dtTxt.toFormattedDay() ?? "16 Nov"
+        
+            cell.set(degree: String(data.main.temp), icon: data.weather[0].assetName, day: day)
             return cell
         default:
             return UICollectionViewCell()

@@ -26,3 +26,33 @@ extension UIColor {
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
 }
+
+extension String {
+    func toFormattedTime() -> String? {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        inputFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+
+        if let date = inputFormatter.date(from: self) {
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = "HH.mm"
+            outputFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+            return outputFormatter.string(from: date)
+        }
+        return nil
+    }
+    
+    func toFormattedDay() -> String? {
+            let inputFormatter = DateFormatter()
+            inputFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            inputFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+
+            if let date = inputFormatter.date(from: self) {
+                let outputFormatter = DateFormatter()
+                outputFormatter.dateFormat = "d MMMM"
+                outputFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+                return outputFormatter.string(from: date)
+            }
+            return nil
+        }
+}

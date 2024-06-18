@@ -12,14 +12,14 @@ class DayForecastCell: UICollectionViewCell {
     
     static let cellIdentifier = "DayForecastCell"
     
-    var cellData: DayWeatherModel? {
-        didSet {
-            guard let cellData = cellData else { return }
-            weatherIcon.image = UIImage(named: cellData.icon)
-            degreeLabel.text = cellData.degree
-            timeLabel.text = cellData.time
-        }
-    }
+//    var cellData: DayWeatherModel? {
+//        didSet {
+//            guard let cellData = cellData else { return }
+//            weatherIcon.image = UIImage(named: cellData.icon)
+//            degreeLabel.text = cellData.degree
+//            timeLabel.text = cellData.time
+//        }
+//    }
 
     private lazy var weatherIcon: UIImageView = {
         let image = UIImageView()
@@ -75,6 +75,12 @@ class DayForecastCell: UICollectionViewCell {
         verticalStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    func set(degree: String, icon: String, time: String ) {
+        weatherIcon.image = UIImage(named: icon)
+        degreeLabel.text = degree
+        timeLabel.text = time
     }
 }
 

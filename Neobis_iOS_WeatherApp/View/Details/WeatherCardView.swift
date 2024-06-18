@@ -63,11 +63,11 @@ class WeatherCardView: UIView {
         super.init(coder: coder)
     }
     
-    func set(weather: WeatherIconModel) {
-        weatherWindState.stateDetail.text = "\(weather.wind) km/h"
-        weatherHumidState.stateDetail.text = "\(weather.humidity)%"
-        temperatureLabel.text = "\(weather.temperature) °C"
-        descriptionLabel.text = "\(weather.weatherName)"
+    func set(weather: WeatherData) {
+        weatherWindState.stateDetail.text = "\(weather.list[0].wind.speed) km/h"
+        weatherHumidState.stateDetail.text = "\(weather.list[0].main.humidity)%"
+        temperatureLabel.text = "\(weather.list[0].main.temp) °C"
+        descriptionLabel.text = "\(weather.list[0].weather[0].main)"
     }
     
     

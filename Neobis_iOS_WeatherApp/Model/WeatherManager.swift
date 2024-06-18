@@ -9,12 +9,14 @@
 import CoreLocation
 
 protocol WeatherManagerDelegate{
-    func didUpdateWeather(_ weatherManage: WeatherManager,weather: WeatherIconModel)
+    func didUpdateWeather(_ weatherManage: WeatherManager,weather: WeatherData)
     func didFailWithError(error: Error)
 }
 
 struct WeatherManager{
-    let weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=df827df44c42afcafac84c7c21d9c3eb&units=metric"
+    let apiKey = "df827df44c42afcafac84c7c21d9c3eb"
+//    let weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=df827df44c42afcafac84c7c21d9c3eb&units=metric"
+    let weatherURL = "https://api.openweathermap.org/data/2.5/forecast?q=London&appid=df827df44c42afcafac84c7c21d9c3eb&cnt=5&units=metric"
     var delegate: WeatherManagerDelegate?
     
     func fetchWeather(cityName: String){
@@ -52,27 +54,12 @@ struct WeatherManager{
         }
     }
     
-    func parseJson(weatherData: Data) -> WeatherIconModel?{
+    func parseJson(weatherData: Data) -> WeatherData?{
         let decoder = JSONDecoder()
         do{
             let decodedData = try decoder.decode(WeatherData.self, from: weatherData)
-            let id = decodedData.weather[0].id
-            let name = decodedData.name
-            let temp = decodedData.main.temp
-            let wind = decodedData.wind.speed
-            let humid = decodedData.main.humidity
-            let weatherName = decodedData.weather[0].main
-            
-            let weather = WeatherIconModel(
-                conditionId: id,
-                weatherName: weatherName,
-                cityName: name,
-                temperature: temp,
-                wind: wind,
-                humidity: humid
-            )
-            print(weather.conditionName)
-            return weather
+    
+            return decodedData
             
         } catch{
             self.delegate?.didFailWithError(error: error)

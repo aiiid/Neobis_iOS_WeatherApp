@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WeatherIconModel {
+struct WeatherCardDataModel {
     let conditionId: Int
     let weatherName: String
     let cityName: String

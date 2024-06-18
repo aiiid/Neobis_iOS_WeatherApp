@@ -53,6 +53,12 @@ class WeekForecastCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func set(degree: String, icon: String, day: String ) {
+        weatherIcon.image = UIImage(named: icon)
+        degreeLabel.text = degree
+        dayLabel.text = day
+    }
+    
     private func configureUI() {
         let horizontalStackView: UIStackView = {
             let stackView = UIStackView()

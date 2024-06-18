@@ -27,10 +27,6 @@ class MainViewController: UIViewController {
     
     private func setupViewModel() {
         viewModel = MainViewModel()
-        viewModel.configureNavigationBar(
-            navigationItem: navigationItem,
-            navigationController: navigationController
-        )
     }
     
     private func setupTargets(){
@@ -70,10 +66,13 @@ class MainViewController: UIViewController {
 }
 
 extension MainViewController: WeatherManagerDelegate {
-    func didUpdateWeather(_ weatherManage: WeatherManager, weather: WeatherIconModel) {
+    func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherData) {
         let weatherDetails = self.mainView.weatherCardView
+        viewModel.weatherData = weather
         DispatchQueue.main.async {
             weatherDetails.set(weather: weather)
+            print(weather)
+            print(self.viewModel.dayWeatherData)
         }
     }
     
