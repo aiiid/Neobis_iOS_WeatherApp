@@ -29,7 +29,7 @@ class AppLayouts {
         // Section settings
          let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 60, trailing: 10)
-//        section.orthogonalScrollingBehavior = .continuous
+        section.orthogonalScrollingBehavior = .continuous
         
         // Adjust interGroupSpacing
         section.interGroupSpacing = 7
@@ -66,7 +66,7 @@ class AppLayouts {
         // Section settings
          let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 0, trailing: 10)
-        section.orthogonalScrollingBehavior = .continuous
+//         section.orthogonalScrollingBehavior = .continuous
         
         // Adjust interGroupSpacing
         section.interGroupSpacing = 15 // Set the desired spacing between groups

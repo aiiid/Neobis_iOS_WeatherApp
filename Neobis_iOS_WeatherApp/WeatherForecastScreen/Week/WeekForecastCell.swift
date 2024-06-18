@@ -58,7 +58,7 @@ class WeekForecastCell: UICollectionViewCell {
             let stackView = UIStackView()
             stackView.axis = .horizontal
             stackView.spacing = 10
-            stackView.distribution = .equalSpacing
+            stackView.distribution = .equalCentering
             return stackView
         }()
         

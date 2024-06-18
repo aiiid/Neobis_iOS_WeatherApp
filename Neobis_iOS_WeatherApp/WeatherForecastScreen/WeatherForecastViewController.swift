@@ -4,90 +4,31 @@
 //
 //  Created by Ai Hawok on 13/06/2024.
 //
-
 import UIKit
 
 class WeatherForecastViewController: UIViewController {
-
-    lazy var dayForecastCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: UICollectionViewLayout())
-        collectionView.register(
-            DayForecastCell.self,
-            forCellWithReuseIdentifier: DayForecastCell.cellIdentifier
-        )
-        collectionView.register(
-            WeekForecastCell.self,
-            forCellWithReuseIdentifier: WeekForecastCell.cellIdentifier
-        )
-        
-        collectionView.backgroundColor = .clear
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        return collectionView
-    }()
+    private let contentView = WeatherView()
+    //    private var viewModel: MainViewModel!
     
-//    lazy var weekForecastCollectionView: UICollectionView = {
-//        let collectionView = UICollectionView(
-//            frame: .zero,
-//            collectionViewLayout: UICollectionViewLayout())
-//        collectionView.register(
-//            WeekForecastCell.self,
-//            forCellWithReuseIdentifier: WeekForecastCell.cellIdentifier
-//        )
-//        collectionView.backgroundColor = .clear
-//        collectionView.dataSource = self
-//        collectionView.delegate = self
-//        return collectionView
-//    }()
-
+    
+    
+    override func loadView() {
+        view = contentView
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .purple
-        configureUI()
+        view.backgroundColor = .systemBackground
+        setupDataSource()
+        setupNavigationBar()
+        //        setupViewModel()
     }
     
-    private func configureUI() {
-        configureLayout()
-        
-        view.addSubview(dayForecastCollectionView)
-        
-        dayForecastCollectionView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
-            make.leading.trailing.equalToSuperview().inset(10)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
-        }
-        
+    private func setupDataSource() {
+        contentView.dayForecastCollectionView.dataSource = self
+        contentView.dayForecastCollectionView.delegate = self
     }
     
-    private func configureLayout() {
-//        let dayForecastlayout = UICollectionViewCompositionalLayout(section: AppLayouts.shared.dayForecastSection())
-//        dayForecastlayout.configuration.scrollDirection = .horizontal
-//        dayForecastlayout.collectionView?.isScrollEnabled = true
-//        dayForecastCollectionView.setCollectionViewLayout(dayForecastlayout, animated: true)
-//        
-//        let weekForecastLayout =  UICollectionViewCompositionalLayout(section: AppLayouts.shared.weekForecastSection())
-//        dayForecastlayout.configuration.scrollDirection = .vertical
-//        dayForecastlayout.collectionView?.isScrollEnabled = true
-//        dayForecastCollectionView.setCollectionViewLayout(weekForecastLayout, animated: true)
-      
-        let layout = UICollectionViewCompositionalLayout { sectionIndex, enviroment in
-            switch sectionIndex {
-            case 0:
-                return AppLayouts.shared.dayForecastSection()
-            case 1:
-                return AppLayouts.shared.weekForecastSection()
-            default:
-                return AppLayouts.shared.dayForecastSection()
-            }
-        }
-        dayForecastCollectionView.setCollectionViewLayout(layout, animated: true)
-        
-    }
-    
-    private func configureNavigationBar() {
+    private func setupNavigationBar() {
         let rightIcon = UIBarButtonItem(
             image: UIImage(systemName: "gearshape"),
             style: .plain,
@@ -97,12 +38,23 @@ class WeatherForecastViewController: UIViewController {
         rightIcon.tintColor = .white
         navigationItem.rightBarButtonItem = rightIcon
     }
-
 }
 
 extension WeatherForecastViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return DayForecastCell.mockData.count
+        switch section {
+        case 0:
+            return DayForecastCell.mockData.count
+        case 1:
+            return WeekWeatherModel.MockData.count
+        default:
+            return 0
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -128,9 +80,27 @@ extension WeatherForecastViewController: UICollectionViewDataSource, UICollectio
         default:
             return UICollectionViewCell()
         }
-        
     }
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionHeader {
+            guard let header = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: WeatherHeaderView.headerIdentifier,
+                for: indexPath
+            ) as? WeatherHeaderView else {
+                return UICollectionReusableView()
+            }
+            switch indexPath.section {
+            case 0:
+                header.configureHeader(for: .day, with: "Today", date: "12 sept")
+            case 1:
+                header.configureHeader(for: .week, with: "Next Week")
+            default:
+                break
+            }
+            return header
+        }
+        return UICollectionReusableView()
     }
 }

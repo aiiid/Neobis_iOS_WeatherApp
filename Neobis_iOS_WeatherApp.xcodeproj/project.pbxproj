@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		AA36B74D153FAE536B133579 /* Pods_Neobis_iOS_WeatherApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E929F9494F481BFF96A82FEF /* Pods_Neobis_iOS_WeatherApp.framework */; };
+		E27F87A02C214FBD00809C1E /* WeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27F879F2C214FBD00809C1E /* WeatherView.swift */; };
+		E27F87A22C21551800809C1E /* WeatherHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27F87A12C21551800809C1E /* WeatherHeaderView.swift */; };
 		E2AE3BBC2C1C1E7D005C07E3 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AE3BBB2C1C1E7D005C07E3 /* Extension.swift */; };
 		E2AE3BBE2C1C755D005C07E3 /* WeatherStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AE3BBD2C1C755D005C07E3 /* WeatherStateView.swift */; };
 		E2AE3BC22C1C8651005C07E3 /* WeatherCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AE3BC12C1C8651005C07E3 /* WeatherCardView.swift */; };
@@ -39,6 +41,8 @@
 /* Begin PBXFileReference section */
 		171B54F090C1903841E2530A /* Pods-Neobis_iOS_WeatherApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Neobis_iOS_WeatherApp.debug.xcconfig"; path = "Target Support Files/Pods-Neobis_iOS_WeatherApp/Pods-Neobis_iOS_WeatherApp.debug.xcconfig"; sourceTree = "<group>"; };
 		73543686B1BD1E05EB2268FB /* Pods-Neobis_iOS_WeatherApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Neobis_iOS_WeatherApp.release.xcconfig"; path = "Target Support Files/Pods-Neobis_iOS_WeatherApp/Pods-Neobis_iOS_WeatherApp.release.xcconfig"; sourceTree = "<group>"; };
+		E27F879F2C214FBD00809C1E /* WeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherView.swift; sourceTree = "<group>"; };
+		E27F87A12C21551800809C1E /* WeatherHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherHeaderView.swift; sourceTree = "<group>"; };
 		E2AE3BBB2C1C1E7D005C07E3 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		E2AE3BBD2C1C755D005C07E3 /* WeatherStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherStateView.swift; sourceTree = "<group>"; };
 		E2AE3BC12C1C8651005C07E3 /* WeatherCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCardView.swift; sourceTree = "<group>"; };
@@ -97,6 +101,24 @@
 				73543686B1BD1E05EB2268FB /* Pods-Neobis_iOS_WeatherApp.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		E27F879D2C2138DD00809C1E /* Week */ = {
+			isa = PBXGroup;
+			children = (
+				E2AE3BE62C1F7A5C005C07E3 /* WeekForecastCell.swift */,
+				E2AE3BE82C1F7AB0005C07E3 /* WeekWeatherModel.swift */,
+			);
+			path = Week;
+			sourceTree = "<group>";
+		};
+		E27F879E2C2138E500809C1E /* Day */ = {
+			isa = PBXGroup;
+			children = (
+				E2AE3BDD2C1F64B5005C07E3 /* DayForecastCell.swift */,
+				E2AE3BDF2C1F6532005C07E3 /* DayWeatherModel.swift */,
+			);
+			path = Day;
 			sourceTree = "<group>";
 		};
 		E2AE3BBA2C1C1E72005C07E3 /* Utilities */ = {
@@ -164,13 +186,13 @@
 		E2AE3BDC2C1F63FC005C07E3 /* WeatherForecastScreen */ = {
 			isa = PBXGroup;
 			children = (
+				E27F879E2C2138E500809C1E /* Day */,
+				E27F879D2C2138DD00809C1E /* Week */,
 				E2D2FF822C1AD72900B8BDCB /* WeatherForecastViewController.swift */,
-				E2AE3BDD2C1F64B5005C07E3 /* DayForecastCell.swift */,
-				E2AE3BDF2C1F6532005C07E3 /* DayWeatherModel.swift */,
 				E2AE3BE22C1F71CB005C07E3 /* Constants.swift */,
 				E2AE3BE42C1F737D005C07E3 /* AppLayouts.swift */,
-				E2AE3BE62C1F7A5C005C07E3 /* WeekForecastCell.swift */,
-				E2AE3BE82C1F7AB0005C07E3 /* WeekWeatherModel.swift */,
+				E27F879F2C214FBD00809C1E /* WeatherView.swift */,
+				E27F87A12C21551800809C1E /* WeatherHeaderView.swift */,
 			);
 			path = WeatherForecastScreen;
 			sourceTree = "<group>";
@@ -363,6 +385,7 @@
 				E2D2FF6C2C1A0EE500B8BDCB /* MainViewController.swift in Sources */,
 				E2AE3BBE2C1C755D005C07E3 /* WeatherStateView.swift in Sources */,
 				E2D2FF7E2C1AD64B00B8BDCB /* MainView.swift in Sources */,
+				E27F87A02C214FBD00809C1E /* WeatherView.swift in Sources */,
 				E2AE3BCB2C1D7D41005C07E3 /* CustomNavigationBar.swift in Sources */,
 				E2D2FF832C1AD72900B8BDCB /* WeatherForecastViewController.swift in Sources */,
 				E2AE3BE52C1F737D005C07E3 /* AppLayouts.swift in Sources */,
@@ -372,6 +395,7 @@
 				E2AE3BBC2C1C1E7D005C07E3 /* Extension.swift in Sources */,
 				E2AE3BC52C1D6B71005C07E3 /* ButtonWithIcon.swift in Sources */,
 				E2AE3BD22C1D9211005C07E3 /* WeatherManager.swift in Sources */,
+				E27F87A22C21551800809C1E /* WeatherHeaderView.swift in Sources */,
 				E2AE3BD62C1D9294005C07E3 /* WeatherData.swift in Sources */,
 				E2AE3BDA2C1D96DF005C07E3 /* MainModel.swift in Sources */,
 				E2AE3BC22C1C8651005C07E3 /* WeatherCardView.swift in Sources */,

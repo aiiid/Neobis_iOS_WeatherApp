@@ -20,9 +20,9 @@ class MainViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         setupViewModel()
-        setupNavigation()
         setupTargets()
         setupDelegates()
+        setupNavigationBar()
     }
     
     private func setupViewModel() {
@@ -45,25 +45,27 @@ class MainViewController: UIViewController {
         viewModel.weatherManager.delegate = self
     }
     
-    private func setupNavigation() {
-        viewModel.onNavigateToDetail = { [weak self] in
-            let detailViewController = WeatherForecastViewController()
-            self?.navigationController?.pushViewController(detailViewController, animated: true)
-        }
+    private func setupNavigationBar() {
+        let customNavBarView = NavigationBarConfigurator.createCustomNavigationBar(with: "Astana")
+        let rightBarButtonItem = NavigationBarConfigurator.createRightBarButtonItem()
         
-        viewModel.onNavigateToSearch = { [weak self] in
-            let searchViewController = SearchViewController()
-            self?.navigationController?.pushViewController(searchViewController, animated: true)
-        }
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(navBarTitleTapped))
+            customNavBarView.addGestureRecognizer(tapGesture)
+            customNavBarView.isUserInteractionEnabled = true
+        
+        navigationItem.titleView = customNavBarView
+        navigationItem.rightBarButtonItem = rightBarButtonItem
     }
 
     @objc private func nextScreenButtonTapped(){
-            viewModel.handleNextScreenButtonTap()
+        let WeatherForecast = WeatherForecastViewController()
+        navigationController?.pushViewController(WeatherForecast, animated: true)
             viewModel.fetchWeather(for: "Astana")
     }
     
-    @objc private func searchButtonTapped() {
-        viewModel.handleSearchButtonTap()
+    @objc private func navBarTitleTapped() {
+        let SearchScreen = SearchViewController()
+        navigationController?.pushViewController(SearchScreen, animated: true)
     }
 }
 
