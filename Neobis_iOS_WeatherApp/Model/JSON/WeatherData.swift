@@ -70,6 +70,10 @@ struct Main: Codable {
         case humidity
         case tempKf = "temp_kf"
     }
+    
+    var formattedTemperature: String {
+        return String(format: "%.0f°", temp)
+    }
 }
 
 // MARK: - Rain

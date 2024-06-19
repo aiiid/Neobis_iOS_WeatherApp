@@ -16,28 +16,32 @@ struct DailyWeatherModel {
     var conditionName: String {
         switch conditionId {
         case 200...232:
-            return "thunderstorm"
+            return "cloud.bolt"
         case 300...321:
-            return "drizzle"
+            return "cloud.drizzle"
         case 500...531:
-            return "rain"
+            return "cloud.rain"
         case 600...622:
-            return "snow"
+            return "cloud.snow"
         case 701...781:
-            return "atmosphere"
+            return "cloud.fog"
         case 800:
-            return "clear"
+            return "sun.horizon"
         case 801...804:
-            return "clouds"
+            return "cloud"
         default:
-            return "unknown"
+            return "cloud.moon"
         }
     }
     
     var formattedDate: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
-        return dateFormatter.string(from: date)
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "d MMMM"
+        outputFormatter.timeZone = TimeZone.current
+        return outputFormatter.string(from: date)
+    }
+    
+    var formattedMinTemperature: String {
+        return String(format: "%.0f°", minTemperature)
     }
 }

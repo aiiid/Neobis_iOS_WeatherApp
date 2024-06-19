@@ -8,8 +8,8 @@
 import UIKit
 
 class MainViewController: UIViewController {
-    private let mainView = MainView()
-    private var viewModel: MainViewModel!
+     let mainView = MainView()
+     var viewModel: MainViewModel!
     
     override func loadView() {
         view = mainView
@@ -19,10 +19,14 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
+        
         setupViewModel()
         setupTargets()
         setupDelegates()
         setupNavigationBar()
+        
+        viewModel.fetchWeather(for: "Astana")
+        viewModel.updateWeather()
     }
     
     private func setupViewModel() {
@@ -55,12 +59,14 @@ class MainViewController: UIViewController {
 
     @objc private func nextScreenButtonTapped(){
         let WeatherForecast = WeatherForecastViewController()
+        WeatherForecast.viewModel = viewModel
         navigationController?.pushViewController(WeatherForecast, animated: true)
-            viewModel.fetchWeather(for: "Astana")
+        
     }
     
     @objc private func navBarTitleTapped() {
         let SearchScreen = SearchViewController()
+        SearchScreen.viewModel = viewModel
         navigationController?.pushViewController(SearchScreen, animated: true)
     }
 }
@@ -71,9 +77,9 @@ extension MainViewController: WeatherManagerDelegate {
         viewModel.weatherData = weather
         DispatchQueue.main.async {
             weatherDetails.set(weather: weather)
-            print(weather)
-            print(self.viewModel.dayWeatherData)
+            self.viewModel.updateWeather()
         }
+        
     }
     
     func didFailWithError(error: Error) {

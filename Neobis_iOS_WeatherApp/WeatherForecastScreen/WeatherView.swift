@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 class WeatherView: UIView {
+    
     private let gradientLayer = CAGradientLayer()
     
     lazy var dayForecastCollectionView: UICollectionView = {
@@ -53,7 +54,7 @@ class WeatherView: UIView {
         dayForecastCollectionView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide).offset(30)
-            make.leading.trailing.equalToSuperview().inset(10)
+            make.leading.trailing.equalToSuperview().inset(15)
             make.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
@@ -101,3 +102,4 @@ class WeatherView: UIView {
     }
     
 }
+

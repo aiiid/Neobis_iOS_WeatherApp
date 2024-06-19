@@ -7,20 +7,15 @@
 
 import UIKit
 
-class MainViewModel: WeatherManagerDelegate{
-    init(){
-        weatherManager.delegate = self
-    }
-    func didUpdateWeather(_ weatherManage: WeatherManager, weather: WeatherData) {
-        weatherData = weather
-    }
+class MainViewModel{
     
-    func didFailWithError(error: Error) {
-        print(error)
-    }
-    
+//    
     var weatherManager = WeatherManager()
-     var weatherData: WeatherData?
+    var weatherData: WeatherData? {
+        didSet {
+                  updateWeather()
+              }
+    }
     
    
     var dayWeatherData: [WeatherList] = []
@@ -28,28 +23,52 @@ class MainViewModel: WeatherManagerDelegate{
     
     func fetchWeather(for cityName: String) {
         weatherManager.fetchWeather(cityName: cityName)
+    }
+    
+    func updateWeather(){
         extractDayWeatherData()
         extractWeekWeatherData()
     }
     
     private func extractDayWeatherData() {
-        guard let weatherData = weatherData else { return }
-        // Filter the list to include data for the next 24 hours (e.g., every 3 hours)
-        self.dayWeatherData = weatherData.list.filter { $0.dtTxt.contains("09:00:00") || $0.dtTxt.contains("12:00:00") || $0.dtTxt.contains("15:00:00") || $0.dtTxt.contains("18:00:00") || $0.dtTxt.contains("21:00:00") }
-    }
+           guard let weatherData = weatherData else { return }
+           weatherData.list.forEach { print($0.dtTxt) }
+        
+           let dateFormatter = DateFormatter()
+           dateFormatter.dateFormat = "yyyy-MM-dd"
+           let todayDateString = dateFormatter.string(from: Date())
+           
+           let desiredTimes = ["09:00:00", "12:00:00", "15:00:00", "18:00:00", "21:00:00"]
+           let todayData = weatherData.list.filter { listItem in
+               listItem.dtTxt.contains(todayDateString) && desiredTimes.contains { listItem.dtTxt.contains($0) }
+           }
+           
+           self.dayWeatherData = Array(todayData.prefix(7))
+           
+           dayWeatherData.forEach { print($0.dtTxt) }
+       }
     
     private func extractWeekWeatherData() {
-        guard let weatherData = weatherData else { return }
-        // Extract a summary for each day (e.g., max and min temperature for the day)
-        let groupedByDay = Dictionary(grouping: weatherData.list) { (list) -> String in
-            let date = list.dtTxt.split(separator: " ").first!
-            return String(date)
+            guard let weatherData = weatherData else { return }
+            // Group data by day and calculate min and max temperatures for each day
+            let groupedByDay = Dictionary(grouping: weatherData.list) { (list) -> String in
+                let date = list.dtTxt.split(separator: " ").first!
+                return String(date)
+            }
+            self.weekWeatherData = groupedByDay.map { (key, values) -> DailyWeatherModel in
+                let minTemp = values.map { $0.main.tempMin }.min() ?? 0
+                let maxTemp = values.map { $0.main.tempMax }.max() ?? 0
+                return DailyWeatherModel(date: key.toDate()!, minTemperature: minTemp, maxTemperature: maxTemp, conditionId: values.first!.weather.first!.id)
+            }.sorted { $0.date < $1.date } // Ensure sorting by date
         }
-        self.weekWeatherData = groupedByDay.map { (key, values) -> DailyWeatherModel in
-            let minTemp = values.map { $0.main.tempMin }.min() ?? 0
-            let maxTemp = values.map { $0.main.tempMax }.max() ?? 0
-            return DailyWeatherModel(date: Date(timeIntervalSince1970: TimeInterval(values.first!.dt)), minTemperature: minTemp, maxTemperature: maxTemp, conditionId: values.first!.weather.first!.id)
-        }
-    }
+    
 }
     
+extension String {
+    func toDate() -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return dateFormatter.date(from: self)
+    }
+}

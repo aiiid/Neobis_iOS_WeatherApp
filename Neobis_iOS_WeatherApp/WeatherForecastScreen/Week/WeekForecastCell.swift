@@ -26,6 +26,7 @@ class WeekForecastCell: UICollectionViewCell {
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFit
         image.clipsToBounds = true
+        image.tintColor = .white
         return image
     }()
     
@@ -33,6 +34,7 @@ class WeekForecastCell: UICollectionViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.textColor = .white
+        label.font = .systemFont(ofSize: 18, weight: .semibold)
         return label
     }()
     
@@ -54,7 +56,7 @@ class WeekForecastCell: UICollectionViewCell {
     }
     
     func set(degree: String, icon: String, day: String ) {
-        weatherIcon.image = UIImage(named: icon)
+        weatherIcon.image = UIImage(systemName: icon)
         degreeLabel.text = degree
         dayLabel.text = day
     }

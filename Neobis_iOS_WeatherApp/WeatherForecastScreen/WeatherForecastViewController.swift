@@ -8,23 +8,24 @@ import UIKit
 
 class WeatherForecastViewController: UIViewController {
     private let contentView = WeatherView()
-    private var viewModel: MainViewModel!
+     var viewModel: MainViewModel!
     
     
     
     override func loadView() {
         view = contentView
+        
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupDataSource()
         setupNavigationBar()
-        setupViewModel()
-    }
-    
-    private func setupViewModel() {
-        viewModel = MainViewModel()
+//        setupViewModel()
+        if viewModel.weatherData == nil {
+                    viewModel.fetchWeather(for: "Astana")
+                }
     }
     
     private func setupDataSource() {
@@ -41,6 +42,7 @@ class WeatherForecastViewController: UIViewController {
         )
         rightIcon.tintColor = .white
         navigationItem.rightBarButtonItem = rightIcon
+        navigationController?.navigationBar.tintColor = .white
     }
 }
 
@@ -73,7 +75,7 @@ extension WeatherForecastViewController: UICollectionViewDataSource, UICollectio
             let data = viewModel.dayWeatherData[indexPath.row]
             let time = data.dtTxt.toFormattedTime() ?? "00.00"
         
-            cell.set(degree: String(data.main.temp), icon: data.weather[0].assetName, time: time)
+            cell.set(degree: String(data.main.formattedTemperature), icon: data.weather[0].assetName, time: time)
             return cell
         case 1:
             guard let cell = collectionView.dequeueReusableCell(
@@ -82,10 +84,10 @@ extension WeatherForecastViewController: UICollectionViewDataSource, UICollectio
             ) as? WeekForecastCell else {
                 return UICollectionViewCell()
             }
-            let data = viewModel.dayWeatherData[indexPath.row]
-            let day = data.dtTxt.toFormattedDay() ?? "16 Nov"
+            let data = viewModel.weekWeatherData[indexPath.row]
+            _ = data.date.description
         
-            cell.set(degree: String(data.main.temp), icon: data.weather[0].assetName, day: day)
+            cell.set(degree: data.formattedMinTemperature, icon: data.conditionName, day: data.formattedDate)
             return cell
         default:
             return UICollectionViewCell()
@@ -113,4 +115,18 @@ extension WeatherForecastViewController: UICollectionViewDataSource, UICollectio
         }
         return UICollectionReusableView()
     }
+}
+
+extension WeatherForecastViewController: WeatherManagerDelegate {
+    func didUpdateWeather(_ weatherManage: WeatherManager, weather: WeatherData) {
+        DispatchQueue.main.async {
+            self.contentView.dayForecastCollectionView.reloadData()
+        }
+    }
+    
+    func didFailWithError(error: Error) {
+        print("error")
+    }
+    
+    
 }
