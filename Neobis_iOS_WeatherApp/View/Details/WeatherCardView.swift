@@ -64,6 +64,7 @@ class WeatherCardView: UIView {
     }
     
     func set(weather: WeatherData) {
+        dateLabel.text = weather.list[0].dtTxt.toFormattedDay()
         weatherWindState.stateDetail.text = "\(weather.list[0].wind.speed) km/h"
         weatherHumidState.stateDetail.text = "\(weather.list[0].main.humidity)%"
         temperatureLabel.text = "\(weather.list[0].main.temp) °C"

@@ -9,22 +9,23 @@ import UIKit
 import SnapKit
 
 class NavigationBarConfigurator {
+    private static var titleButton: UIButton?
     
     static func createCustomNavigationBar(with title: String) -> UIView {
         let leftIcon = UIImageView(image: UIImage(named: "mapPin.png"))
         leftIcon.tintColor = .white
         
-        let titleButton = UIButton(type: .system)
-        titleButton.setTitle(title, for: .normal)
-        titleButton.tintColor = .white
-        titleButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        titleButton = UIButton(type: .system)
+        titleButton?.setTitle(title, for: .normal)
+        titleButton?.tintColor = .white
+        titleButton?.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         
         let chevronIcon = UIImageView()
         chevronIcon.image = UIImage(systemName: "chevron.down")
         chevronIcon.tintColor = .white
         chevronIcon.contentMode = .scaleAspectFit
         
-        let stackView = UIStackView(arrangedSubviews: [leftIcon, titleButton, chevronIcon])
+        let stackView = UIStackView(arrangedSubviews: [leftIcon, titleButton!, chevronIcon])
         stackView.axis = .horizontal
         stackView.spacing = 16
         stackView.alignment = .center
@@ -49,4 +50,8 @@ class NavigationBarConfigurator {
         rightIcon.tintColor = .white
         return rightIcon
     }
+    
+    static func updateTitle(_ title: String) {
+            titleButton?.setTitle(title, for: .normal)
+        }
 }

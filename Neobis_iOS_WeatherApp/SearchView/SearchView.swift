@@ -25,6 +25,12 @@ class SearchView: UIView {
         return button
     }()
     
+    let tableView: UITableView = {
+            let tableView = UITableView()
+            tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+            return tableView
+        }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -38,6 +44,7 @@ class SearchView: UIView {
     private func setupUI() {
         addSubview(searchTextField)
         addSubview(searchButton)
+        addSubview(tableView)
         
         searchTextField.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -48,6 +55,11 @@ class SearchView: UIView {
         searchButton.snp.makeConstraints { make in
             make.top.equalTo(searchTextField.snp.bottom).offset(16)
             make.centerX.equalToSuperview()
+        }
+        
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(searchButton.snp.bottom).offset(10)
+            make.trailing.leading.equalToSuperview()
         }
     }
 }

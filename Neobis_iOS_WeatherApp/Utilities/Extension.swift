@@ -42,17 +42,26 @@ extension String {
         return nil
     }
     
-    func toFormattedDay() -> String? {
+
+        func toFormattedDay() -> String? {
             let inputFormatter = DateFormatter()
             inputFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            inputFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-
+            
+            let ordinalFormatter = NumberFormatter()
+            ordinalFormatter.numberStyle = .ordinal
+            
             if let date = inputFormatter.date(from: self) {
+                let calendar = Calendar.current
+                let day = calendar.component(.day, from: date)
+                let dayString = ordinalFormatter.string(from: NSNumber(value: day)) ?? "\(day)"
+                
                 let outputFormatter = DateFormatter()
-                outputFormatter.dateFormat = "d MMMM"
-                outputFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-                return outputFormatter.string(from: date)
+                outputFormatter.dateFormat = "MMMM"
+                let monthString = outputFormatter.string(from: date)
+                
+                return "\(dayString) \(monthString)"
             }
             return nil
         }
+    
 }

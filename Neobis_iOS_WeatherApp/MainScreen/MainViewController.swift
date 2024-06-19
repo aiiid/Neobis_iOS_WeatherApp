@@ -19,18 +19,18 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        
         setupViewModel()
         setupTargets()
         setupDelegates()
         setupNavigationBar()
         
-        viewModel.fetchWeather(for: "Astana")
-        viewModel.updateWeather()
+       
     }
     
     private func setupViewModel() {
         viewModel = MainViewModel()
+        viewModel.fetchWeather(for: "Astana")
+        viewModel.updateWeather()
     }
     
     private func setupTargets(){
@@ -53,7 +53,7 @@ class MainViewController: UIViewController {
             customNavBarView.addGestureRecognizer(tapGesture)
             customNavBarView.isUserInteractionEnabled = true
         
-        navigationItem.titleView = customNavBarView
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: customNavBarView)
         navigationItem.rightBarButtonItem = rightBarButtonItem
     }
 
@@ -78,6 +78,7 @@ extension MainViewController: WeatherManagerDelegate {
         DispatchQueue.main.async {
             weatherDetails.set(weather: weather)
             self.viewModel.updateWeather()
+            NavigationBarConfigurator.updateTitle(weather.city.name)
         }
         
     }

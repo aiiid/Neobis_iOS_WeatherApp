@@ -1,31 +1,23 @@
-//
-//  DetailViewController.swift
-//  Neobis_iOS_WeatherApp
-//
-//  Created by Ai Hawok on 13/06/2024.
-//
 import UIKit
 
 class WeatherForecastViewController: UIViewController {
     private let contentView = WeatherView()
-     var viewModel: MainViewModel!
-    
-    
+    var viewModel: MainViewModel!
     
     override func loadView() {
         view = contentView
-        
-        
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupDataSource()
         setupNavigationBar()
-//        setupViewModel()
+        setupCollectionViewLayout()
+        
         if viewModel.weatherData == nil {
-                    viewModel.fetchWeather(for: "Astana")
-                }
+            viewModel.fetchWeather(for: "Astana")
+        }
     }
     
     private func setupDataSource() {
@@ -44,6 +36,21 @@ class WeatherForecastViewController: UIViewController {
         navigationItem.rightBarButtonItem = rightIcon
         navigationController?.navigationBar.tintColor = .white
     }
+    
+    private func setupCollectionViewLayout() {
+        let layout = UICollectionViewCompositionalLayout { sectionIndex, environment in
+            switch sectionIndex {
+            case 0:
+                return AppLayouts.shared.dayForecastSection()
+            case 1:
+                return AppLayouts.shared.weekForecastSection()
+            default:
+                return nil
+            }
+        }
+        
+        contentView.dayForecastCollectionView.setCollectionViewLayout(layout, animated: true)
+    }
 }
 
 extension WeatherForecastViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -60,7 +67,6 @@ extension WeatherForecastViewController: UICollectionViewDataSource, UICollectio
         default:
             return 0
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -105,7 +111,8 @@ extension WeatherForecastViewController: UICollectionViewDataSource, UICollectio
             }
             switch indexPath.section {
             case 0:
-                header.configureHeader(for: .day, with: "Today", date: "12 sept")
+                let firstDayWeather = viewModel.dayWeatherData.first?.dtTxt.toFormattedDay() ?? "N/A"
+                header.configureHeader(for: .day, with: "Today", date: firstDayWeather)
             case 1:
                 header.configureHeader(for: .week, with: "Next Week")
             default:
@@ -127,6 +134,5 @@ extension WeatherForecastViewController: WeatherManagerDelegate {
     func didFailWithError(error: Error) {
         print("error")
     }
-    
-    
 }
+
